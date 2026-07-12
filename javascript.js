@@ -16,6 +16,22 @@ function Book(title, author, numberOfPages, status) {
     this.status = status;
     this.id = self.crypto.randomUUID()
 }
+Book.prototype.changeStatus = function() {
+    switch (this.status) {
+        case 'Finished':
+            this.status = 'Want to read'
+            break;
+    
+        case 'Want to read':
+            this.status = 'Reading'
+            break;
+
+        case 'Reading':
+            this.status = 'Finished'
+            break;
+    }
+    displayLibrary();
+}
 function addBookToLibrary(title, author, numberOfPages, status) {
     let book = new Book(title, author, numberOfPages, status);
     books.push(book)
@@ -28,12 +44,16 @@ function displayBook(book) {
     const numberOfPages = document.createElement('p');
     const status = document.createElement('p');
     const removeBook = document.createElement('button');
+    const changeStatus = document.createElement('button');
     removeBook.id = book.id
+    changeStatus.id = book.id
     title.textContent = book.title;
     author.textContent = book.author;
     numberOfPages.textContent = book.numberOfPages;
     status.textContent = book.status;
     removeBook.textContent = 'Remove from shelf';
+    changeStatus.textContent = 'Change book status';
+    changeStatus.className = 'status';
 
     library.appendChild(card);
     card.appendChild(title);
@@ -41,6 +61,9 @@ function displayBook(book) {
     card.appendChild(numberOfPages);
     card.appendChild(status);
     card.appendChild(removeBook);
+    card.appendChild(changeStatus);
+
+
 }
 function displayLibrary() {
     while (library.lastChild) {
@@ -60,7 +83,14 @@ function removeBook(bookId) {
     }
 
 }
-
+function changeBookStatus(bookId) {
+    for (let book of books) {
+        if (book.id == bookId) {
+            const bookIndex = books.indexOf(book);
+            books[bookIndex].changeStatus();
+        }
+    }
+}
 newBookButton.addEventListener('click', () => {
     dialog.showModal();
 })
@@ -85,13 +115,13 @@ formButton.addEventListener('click', (event) => {
 })
 library.addEventListener('click', (e) => {
     if (e.target.tagName !== 'BUTTON') return
-    removeBook(e.target.id);
+    if (e.target.className == 'status') {
+        changeBookStatus(e.target.id);
+    } else removeBook(e.target.id);
 
 } )
 
-addBookToLibrary('Red Rising', 'Pierce Brown', 382, 'finished');
-addBookToLibrary('Harry Potter', 'J. K. Rowling', 309, 'want to read');
-console.table(books)
+addBookToLibrary('Red Rising', 'Pierce Brown', 382, 'Finished');
+addBookToLibrary('Harry Potter', 'J. K. Rowling', 309, 'Finished');
 
 displayLibrary();
-
