@@ -28,6 +28,7 @@ function displayBook(book) {
     const numberOfPages = document.createElement('p');
     const status = document.createElement('p');
     const removeBook = document.createElement('button');
+    removeBook.id = book.id
     title.textContent = book.title;
     author.textContent = book.author;
     numberOfPages.textContent = book.numberOfPages;
@@ -48,6 +49,16 @@ function displayLibrary() {
     for (const book of books) {
         displayBook(book);
     }
+}
+function removeBook(bookId) {
+    for (let book of books) {
+        if (book.id == bookId) {
+            const bookIndex = books.indexOf(book);
+            books.splice(bookIndex, 1);
+            displayLibrary()
+        }
+    }
+
 }
 
 newBookButton.addEventListener('click', () => {
@@ -72,6 +83,11 @@ formButton.addEventListener('click', (event) => {
     addBookToLibrary(title, author, numberOfPages, status);
     displayLibrary()
 })
+library.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'BUTTON') return
+    removeBook(e.target.id);
+
+} )
 
 addBookToLibrary('Red Rising', 'Pierce Brown', 382, 'finished');
 addBookToLibrary('Harry Potter', 'J. K. Rowling', 309, 'want to read');
