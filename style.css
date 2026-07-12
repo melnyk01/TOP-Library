@@ -6,12 +6,36 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
     grid-auto-rows: 350px;
+    margin-top: 4rem;
     gap: 4rem;
-    
 }
 
 .library > div {
     border: 2px solid;
     text-align: center;
     background-color: rgb(255, 148, 148);
+}
+
+.new-book {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem;
+}
+button#new-book {
+    height: 6rem;
+    width: 12rem;
+    font-size: xx-large;
+
+}
+
+form#new-book {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+    font-size: xxx-large;
+}
+
+input {
+    height: 2rem;
 }

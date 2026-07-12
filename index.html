@@ -10,12 +10,33 @@
 <body>
     
     <div class="new-book">
-        <button id="new-book">New Book</button>
+        <button popovertarget="new-book" id="new-book">New Book</button>
+        <dialog id="new-book-dialog" popover>
+            <form action="" id="new-book">
+                <label for="book-title">Please enter book title</label>
+                <input type="text" id="book-title" name="book-title">
+
+                <label for="book-author">Please enter author</label>
+                <input type="text" id="book-author" name="book-author">
+
+                <label for="book-number-of-pages">Please enter number of pages</label>
+                <input type="text" id="book-number-of-pages" name="book-number-of-pages">
+
+                <label for="book-status">Please enter status</label>
+                <input type="text" id="book-status" name="book-status">
+
+                <button id="form-button">Add book</button>
+            </form>
+            <button popovertarget="new-book" popovertargetaction="close" id="close-dialog">Cancel</button>
+        </dialog>
     </div>
 
     <div class="library">
 
     </div>
 
+    <div id="test">
+
+    </div>
 </body>
 </html>
