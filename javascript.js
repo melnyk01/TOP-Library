@@ -121,7 +121,7 @@ library.addEventListener('click', (e) => {
 
 } )
 
-addBookToLibrary('Red Rising', 'Pierce Brown', 382, 'Finished');
-addBookToLibrary('Harry Potter', 'J. K. Rowling', 309, 'Finished');
+// addBookToLibrary('Red Rising', 'Pierce Brown', 382, 'Finished');
+// addBookToLibrary('Harry Potter', 'J. K. Rowling', 309, 'Finished');
 
 displayLibrary();
