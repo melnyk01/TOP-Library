@@ -5,14 +5,24 @@ class Book {
         this.author = author;
         this.numberOfPages = numberOfPages;
         this.status = status;
-        this.id = self.crypto.randomUUID()
+        this.id = crypto.randomUUID()
     }
-    changeBookStatus(bookId) {
-        for (let book of books) {
-            if (book.id == bookId) {
-                const bookIndex = myLibrary.books.indexOf(book);
-                myLibrary.books[bookIndex].changeStatus();
-            }
+    changeBookStatus() {
+        switch (this.status) {
+            case 'Finished':
+                this.status = 'Want to read'
+                break;
+
+            case 'Want to read':
+                this.status = 'Reading'
+                break;
+
+            case 'Reading':
+                this.status = 'Finished'
+                break;
+            default:
+                this.status = "Reading";
+                break;
         }
     }
 
@@ -49,15 +59,19 @@ class UI {
             this.newBookAuthor.value = '';
             this.newBookNumberOfPages.value = ''; 1
             this.newBookStatus.value = '';
-            myLibrary.addBookToLibrary(title, author, numberOfPages, status);
-            myUI.displayLibrary();
+            myLibrary.addBook(title, author, numberOfPages, status);
+            this.displayLibrary();
         })
         this.uiLibrary.addEventListener('click', (e) => {
             if (e.target.tagName !== 'BUTTON') return
             if (e.target.className == 'status') {
-                changeBookStatus(e.target.id);
-            } else removeBook(e.target.id);
+                myLibrary.changeBookStatus(e.target.id);
+                this.displayLibrary();
+            } else {
+                myLibrary.removeBook(myLibrary.findBook(e.target.id));
+                this.displayLibrary();
 
+            }
         })
 
 
@@ -88,13 +102,15 @@ class UI {
         card.appendChild(removeBook);
         card.appendChild(changeStatus);
     }
-    displayLibrary() {
+    clearLibrary() {
         while (this.uiLibrary.lastChild) {
             this.uiLibrary.removeChild(this.uiLibrary.lastChild)
         }
+    }
+    displayLibrary() {
+        this.clearLibrary();
         for (const book of myLibrary.books) {
             this.displayBook(book);
-            console.log(book);
         }
     }
 }
@@ -103,28 +119,26 @@ class Library {
     constructor() {
         this.books = []
     }
-    addBookToLibrary(title, author, numberOfPages, status) {
+    addBook(title, author, numberOfPages, status) {
         let book = new Book(title, author, numberOfPages, status);
-        this.books.push(book)
+        this.books.push(book);
     }
-    removeBook(bookId) {
-        for (let book of this.books) {
-            if (book.id == bookId) {
-                const bookIndex = this.books.indexOf(book);
-                this.books.splice(bookIndex, 1);
-                myUI.displayLibrary();
-            }
-        }
+    findBook(bookId) {
+        return this.books.find(element => element.id === bookId)
     }
-
+    removeBook(book) {
+        const bookIndex = this.books.indexOf(book);
+        this.books.splice(bookIndex, 1);
+    }
+    changeBookStatus(bookId) {
+        const book = this.findBook(bookId);
+        book.changeBookStatus();
+    }
 }
-
-
 const myLibrary = new Library();
 const myUI = new UI();
-myLibrary.addBookToLibrary('Red Rising', 'Pierce Brown', 382, 'Finished');
-myLibrary.addBookToLibrary('Harry Potter', 'J. K. Rowling', 309, 'Finished');
-
+myLibrary.addBook('Red Rising', 'Pierce Brown', 382, 'Finished');
+myLibrary.addBook('Harry Potter', 'J. K. Rowling', 309, 'Finished');
 
 console.log(myLibrary);
 myUI.displayLibrary();
